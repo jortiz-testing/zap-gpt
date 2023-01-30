@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "start": "DEBUG=bot:* node .",
     "dev": "DEBUG=bot:* nodemon ."
   },
   "dependencies": {
