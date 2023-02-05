@@ -7,17 +7,9 @@ module.exports = {
     debug.extend('send')('started');
 
     try {
-      const config = new Configuration({
-        organization: process.env.ORGANIZATION,
-        apiKey: process.env.API_KEY
-      });
+      const config = new Configuration({ apiKey: process.env.API_KEY });
       const openai = new OpenAIApi(config);
-      const request = {
-        model: 'text-davinci-003',
-        max_tokens: 3500,
-        temperature: 1,
-        prompt: data
-      };
+      const request = { model: 'text-davinci-003', max_tokens: 3500, prompt: data };
       debug.extend('send')('request %O', request);
       const response = await openai.createCompletion(request);
       debug.extend('send')('response %O', response.data.choices);
