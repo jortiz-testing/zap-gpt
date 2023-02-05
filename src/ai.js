@@ -7,7 +7,7 @@ module.exports = {
     debug.extend('send')('started');
 
     try {
-      const config = new Configuration({ apiKey: process.env.API_KEY });
+      const config = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
       const openai = new OpenAIApi(config);
       const request = { model: 'text-davinci-003', max_tokens: 3500, prompt: data };
       debug.extend('send')('request %O', request);
