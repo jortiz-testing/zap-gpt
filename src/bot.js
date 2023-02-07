@@ -1,3 +1,4 @@
+const { writeFileSync } = require('fs');
 const debug = require('debug')('bot');
 const bot = require('venom-bot');
 const ai = require('./ai');
@@ -7,8 +8,8 @@ module.exports = {
     debug.extend('start')('started');
 
     try {
-      const options = { session: 'zap-gpt', useChrome: false };
-      const client = await bot.create(options);
+      const options = { useChrome: false, logQR: false };
+      const client = await bot.create('zap-gpt', this.save, undefined, options);
 
       await client.onAnyMessage((message) => this.chat(client, message));
     } catch (error) {
@@ -45,5 +46,18 @@ module.exports = {
     debug.extend('chat')('response %O', { response });
 
     await client.sendText(replyTo, ` ${response}`);
+  },
+  save: function (base64) {
+    const matched = base64.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    const response = {};
+
+    if (matched.length !== 3) {
+      return new Error('Invalid input string');
+    }
+
+    response.type = matched[1];
+    response.data = Buffer.from(matched[2], 'base64');
+
+    writeFileSync('public/qr.png', response.data, 'binary');
   }
 };
